@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item  name="listado_productos" type="urls">http://192.168.1.201/tienda_online/controlador/ListadoProductos.php</item >
+    <item name="url_img" type="urls">http://192.168.1.201/tienda_online/productos/</item>
+    <item name="url_login" type="urls">http://192.168.1.201/tienda_online/controlador/Login.php</item>    
+    <item name="url_my_products" type="urls">http://192.168.1.201/tienda_online/controlador/MisProductos.php</item>
+    <item name="url_remove_product" type="urls">http://192.168.1.201/tienda_online/controlador/EliminarProducto.php</item>
+    <item name="url_sold_product" type="urls">http://192.168.1.201/tienda_online/controlador/ProductoVendido.php</item>
+    <item name="url_chat" type="urls">http://192.168.1.201/tienda_online/controlador/Chat.php</item>
+</resources>

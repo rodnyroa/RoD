@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="email" type="msgForm">Debe ingresar el Email</item>
+    <item name="password" type="msgForm">Debe ingresar el Password</item>
+    
+</resources>
