@@ -45,10 +45,10 @@ public class ParserJsonListadoProductos {
 			}
 			// Array de productos
 			JSONArray jObjectProductos = null;
-			
-			try{
+
+			try {
 				jObjectProductos = jObject.getJSONArray("Products");
-			}catch(Exception e){
+			} catch (Exception e) {
 				//
 			}
 
@@ -91,66 +91,66 @@ public class ParserJsonListadoProductos {
 			try {
 				Id = p.getString("Id");
 			} catch (Exception e) {
-				Id=null;
+				Id = null;
 			}
-			
+
 			try {
 				MainText = p.getString("MainText");
 			} catch (Exception e) {
-				MainText=null;
+				MainText = null;
 			}
-			
+
 			try {
 				Description = p.getString("Description");
 			} catch (Exception e) {
-				Description=null;
+				Description = null;
 			}
-			
+
 			try {
 				Amount = p.getString("Amount");
 			} catch (Exception e) {
-				Amount=null;
+				Amount = null;
 			}
-			
+
 			try {
 				User = p.getString("User");
 			} catch (Exception e) {
-				User=null;
+				User = null;
 			}
-			
+
 			try {
 				UserName = p.getString("UserName");
 			} catch (Exception e) {
-				UserName=null;
+				UserName = null;
 			}
-			
+
 			try {
 				Url = p.getString("Url");
 			} catch (Exception e) {
-				Url=null;
+				Url = null;
 			}
-			
-			if(Amount!=null){
+
+			if (Amount != null) {
 				rp.setAmount(Amount);
 			}
 
-			if(Description!=null){
+			if (Description != null) {
 				rp.setDescription(Description);
 			}
-			
-			if(Id!=null){
+
+			if (Id != null) {
 				rp.setId(Id);
 			}
-			
-			if(MainText!=null){
+
+			if (MainText != null) {
 				rp.setMainText(MainText);
 			}
-			
-			if(User!=null){
+
+			if (User != null) {
 				rp.setUser(User);
 			}
-			
-			if(UserName!=null){
+
+			if (UserName != null) {
 				rp.setUserName(UserName);
 			}
 
@@ -159,10 +159,19 @@ public class ParserJsonListadoProductos {
 			}
 
 			// Array de imagenes
-			JSONArray jObjectImagenes = p.getJSONArray("Img");
+			JSONArray jObjectImagenes = null;
 
-			ArrayList<Imagen> listImg = this.getListadoImg(jObjectImagenes);
-
+			try {
+				jObjectImagenes = p.getJSONArray("Img");
+			} catch (Exception e) {
+				//
+			}
+			
+			ArrayList<Imagen> listImg = null;
+			
+			if(jObjectImagenes!=null){
+				listImg = this.getListadoImg(jObjectImagenes);
+			}
 			if (listImg != null) {
 				rp.setImg(listImg);
 			}

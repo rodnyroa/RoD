@@ -28,39 +28,44 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 public class MessagesFragment extends Fragment {
-	
+
 	View rootView;
-	GridView gridViewMessage;
+	GridView gridLayoutMsg;
 	Context context;
 	Response response;
 	ProgressDialog pd;
-	
-	public MessagesFragment(){}
-	
+
+	public MessagesFragment() {
+	}
+
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
- 
-        rootView = inflater.inflate(R.layout.fragment_messages, container, false);
-        context = rootView.getContext();
-        pd = new ProgressDialog(getActivity());
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		rootView = inflater.inflate(R.layout.fragment_messages, container,
+				false);
+		context = rootView.getContext();
+		pd = new ProgressDialog(getActivity());
 		pd.setMessage("Loading..");
-        
-        //gridViewMessage=(GridView) rootView.findViewById(R.id.gridViewMessage);
-        
-     // Calling async task to get json
-	String[] data = { this.getPreferencesByKey("token") };
-	new GetChat().execute(data);
-         
-        return rootView;
-    }
-	
+
+		 gridLayoutMsg=(GridView)
+		 rootView.findViewById(R.id.GridLayoutMsg);
+		
+		
+		
+		// Calling async task to get json
+		//String[] data = { this.getPreferencesByKey("token") };
+		//new GetChat().execute(data);
+
+		return rootView;
+	}
+
 	private String getPreferencesByKey(String key) {
 		SharedPreferences sharedPreferences = this.getActivity()
 				.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 		return sharedPreferences.getString(key, null);
 	}
-	
+
 	/**
 	 * Async task class to get json by making HTTP call
 	 * */
@@ -77,8 +82,7 @@ public class MessagesFragment extends Fragment {
 			// Creating service handler class instance
 			HandlerRequestHttp sh = new HandlerRequestHttp();
 
-			String urlChat = getResources().getString(
-					R.urls.url_chat);
+			String urlChat = getResources().getString(R.urls.url_chat);
 
 			// ANADIR PARAMETROS
 			List<NameValuePair> data = new ArrayList<NameValuePair>();
@@ -117,15 +121,16 @@ public class MessagesFragment extends Fragment {
 			if (response == null) {
 				return;
 			}
-			Log.d("onPostExecute", ""+response.getResponse());
-			Log.d("onPostExecute", ""+response.getToken());
+			Log.d("onPostExecute", "" + response.getResponse());
+			Log.d("onPostExecute", "" + response.getToken());
 			Toast.makeText(context, "token obtenido:" + response.getToken(),
 					Toast.LENGTH_SHORT).show();
 			if (response.getToken() != null) {
 				savePreferences("token", response.getToken());
-				/*Toast.makeText(context,
-						"Guardando token:" + response.getToken(),
-						Toast.LENGTH_SHORT).show();*/
+				/*
+				 * Toast.makeText(context, "Guardando token:" +
+				 * response.getToken(), Toast.LENGTH_SHORT).show();
+				 */
 			}
 
 			if (response.getResponse().equals("KO2")) {
@@ -133,14 +138,14 @@ public class MessagesFragment extends Fragment {
 			}
 
 			if (response.getResponse().equals("OK")) {
-				
 
-			}else{
-				Toast.makeText(rootView.getContext(), "Sin datos", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(rootView.getContext(), "Sin datos",
+						Toast.LENGTH_SHORT).show();
 				getActivity().findViewById(R.id.frame_container);
-				
+
 				Fragment fragment = new SinDatosFragment();
-				
+
 				FragmentManager fragmentManager = getFragmentManager();
 				fragmentManager.beginTransaction()
 						.replace(R.id.frame_container, fragment).commit();
@@ -149,23 +154,23 @@ public class MessagesFragment extends Fragment {
 			pd.dismiss();
 		}
 	}
-		
-		private void savePreferences(String key, String value) {
-			SharedPreferences sharedPreferences = this.getActivity()
-					.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-			Editor editor = sharedPreferences.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
 
-		private void clearSharedPreferenes() {
-			SharedPreferences sharedPreferences = this.getActivity()
-					.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-			Editor editor = sharedPreferences.edit();
-			editor.clear();
-			editor.commit();
-			this.getActivity().finish();
-			startActivity(this.getActivity().getIntent());
+	private void savePreferences(String key, String value) {
+		SharedPreferences sharedPreferences = this.getActivity()
+				.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.putString(key, value);
+		editor.commit();
+	}
 
-		}
+	private void clearSharedPreferenes() {
+		SharedPreferences sharedPreferences = this.getActivity()
+				.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.clear();
+		editor.commit();
+		this.getActivity().finish();
+		startActivity(this.getActivity().getIntent());
+
+	}
 }

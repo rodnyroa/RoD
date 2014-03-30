@@ -8,10 +8,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
@@ -110,7 +108,7 @@ public class LoginFragment extends Fragment {
 		pd = new ProgressDialog(getActivity());
 		pd.setMessage("Loading..");
 		
-		ListView mDrawerList =(ListView)  rootView.findViewById(R.id.list_slidermenu);;
+		//ListView mDrawerList =(ListView)  rootView.findViewById(R.id.list_slidermenu);;
 
 		return rootView;
 	}

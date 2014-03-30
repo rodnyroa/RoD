@@ -42,7 +42,6 @@ public class MainActivity extends Activity {
 	private TypedArray navMenuIcons;
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
-	private ArrayList<NavDrawerItem> navDrawerItemsOriginal;
 	private NavDrawerListAdapter adapter;
 	boolean isLogged=false;
 
@@ -178,6 +177,7 @@ public class MainActivity extends Activity {
 
 	}
 	
+	@SuppressWarnings("unused")
 	private void getData() {
 		navDrawerItems = new ArrayList<NavDrawerItem>();
 
@@ -257,10 +257,10 @@ public class MainActivity extends Activity {
 				long id) {
 			// display view for selected nav drawer item
 			// if(navDrawerItems.get(position).isItemVisible())
-			String msg = "PosList:"
+			/*String msg = "PosList:"
 					+ navDrawerItems.get(position).getPositionListView()
 					+ " postition:" + position + " Title:"
-					+ navDrawerItems.get(position).getTitle();
+					+ navDrawerItems.get(position).getTitle();*/
 			/*Toast.makeText(getApplicationContext(), "-->" + msg,
 					Toast.LENGTH_SHORT).show();*/
 			
@@ -382,6 +382,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
