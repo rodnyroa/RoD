@@ -8,8 +8,10 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.rodnyroa.tienda_online_nativo.R;
 import com.rodnyroa.tienda_online_nativo.adapter.CustomAdapterListadoProductos;
+import com.rodnyroa.tienda_online_nativo.adapter.GridLayoutMessagesAdapter;
 import com.rodnyroa.tienda_online_nativo.handlerrequest.HandlerRequestHttp;
 import com.rodnyroa.tienda_online_nativo.model.Response;
+import com.rodnyroa.tienda_online_nativo.model.RowProducto;
 import com.rodnyroa.tienda_online_nativo.parserjson.ParserJsonListadoProductos;
 
 import android.app.Fragment;
@@ -24,6 +26,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -48,14 +52,43 @@ public class MessagesFragment extends Fragment {
 		pd = new ProgressDialog(getActivity());
 		pd.setMessage("Loading..");
 
-		 gridLayoutMsg=(GridView)
-		 rootView.findViewById(R.id.GridLayoutMsg);
-		
-		
-		
+		gridLayoutMsg = (GridView) rootView.findViewById(R.id.gridView1);
+
+		response = new Response();
+
+		ArrayList<RowProducto> listado = new ArrayList<RowProducto>();
+
+		for (int i = 1; i <= 5; i++) {
+			RowProducto p = new RowProducto();
+
+			p.setId(i + "");
+			p.setUrl("13841178924344770.jpeg");
+
+			listado.add(p);
+			p = null;
+		}
+
+		// Log.d("listado: ", "> " + listado.size());
+		 gridLayoutMsg.setAdapter(new GridLayoutMessagesAdapter(context,
+		 listado));
+		// http://www.rogcg.com/blog/2013/11/01/gridview-with-auto-resized-images-on-android
 		// Calling async task to get json
 		//String[] data = { this.getPreferencesByKey("token") };
 		//new GetChat().execute(data);
+		 
+		 gridLayoutMsg.setOnItemClickListener(new OnItemClickListener() 
+		 {
+			    
+				@Override
+				public void onItemClick(AdapterView<?> parent, View v,
+						int position, long id) {
+					// this 'mActivity' parameter is Activity object, you can send the current activity.
+			        //Intent i = new Intent(mActivity, ActvityToCall.class);
+			        //mActivity.startActivity(i);
+					//Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+					Log.i("", "hola"+position);
+				}
+			});
 
 		return rootView;
 	}
@@ -138,7 +171,8 @@ public class MessagesFragment extends Fragment {
 			}
 
 			if (response.getResponse().equals("OK")) {
-
+				gridLayoutMsg.setAdapter(new GridLayoutMessagesAdapter(context,
+						 response.getProducts()));
 			} else {
 				Toast.makeText(rootView.getContext(), "Sin datos",
 						Toast.LENGTH_SHORT).show();
