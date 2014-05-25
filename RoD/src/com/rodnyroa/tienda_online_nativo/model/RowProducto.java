@@ -1,8 +1,9 @@
 package com.rodnyroa.tienda_online_nativo.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RowProducto {
+public class RowProducto  implements Serializable{
 	private String Id;
 	private String MainText;
 	private String Description;

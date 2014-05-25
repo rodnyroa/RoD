@@ -18,6 +18,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
@@ -69,12 +70,12 @@ public class MessagesFragment extends Fragment {
 		}
 
 		// Log.d("listado: ", "> " + listado.size());
-		 gridLayoutMsg.setAdapter(new GridLayoutMessagesAdapter(context,
-		 listado));
+		// gridLayoutMsg.setAdapter(new GridLayoutMessagesAdapter(context,
+		// listado));
 		// http://www.rogcg.com/blog/2013/11/01/gridview-with-auto-resized-images-on-android
 		// Calling async task to get json
-		//String[] data = { this.getPreferencesByKey("token") };
-		//new GetChat().execute(data);
+		String[] data = { this.getPreferencesByKey("token") };
+		new GetChat().execute(data);
 		 
 		 gridLayoutMsg.setOnItemClickListener(new OnItemClickListener() 
 		 {
@@ -82,11 +83,18 @@ public class MessagesFragment extends Fragment {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View v,
 						int position, long id) {
-					// this 'mActivity' parameter is Activity object, you can send the current activity.
-			        //Intent i = new Intent(mActivity, ActvityToCall.class);
-			        //mActivity.startActivity(i);
-					//Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+					
 					Log.i("", "hola"+position);
+					if(response==null){
+						return;
+					}
+					Log.i("", "HOLA"+response.getProducts().get(position).getUsers().get(0).getCompleteName());
+					
+					// this 'mActivity' parameter is Activity object, you can send the current activity.
+			        Intent i = new Intent(context, MsgChatUsersActivity.class);
+			        i.putExtra("Users", response.getProducts().get(position).getUsers());
+			        startActivity(i);
+					//Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
 				}
 			});
 

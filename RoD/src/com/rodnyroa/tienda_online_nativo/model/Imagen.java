@@ -1,6 +1,8 @@
 package com.rodnyroa.tienda_online_nativo.model;
 
-public class Imagen {
+import java.io.Serializable;
+
+public class Imagen  implements Serializable{
 	private String Id;
 	private String Img;
 

@@ -1,6 +1,8 @@
 package com.rodnyroa.tienda_online_nativo.model;
 
-public class Message {
+import java.io.Serializable;
+
+public class Message  implements Serializable{
 
 	private String Id;
 	private String Message;

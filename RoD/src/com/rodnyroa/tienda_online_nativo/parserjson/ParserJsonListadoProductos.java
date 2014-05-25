@@ -3,11 +3,15 @@ package com.rodnyroa.tienda_online_nativo.parserjson;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.rodnyroa.tienda_online_nativo.R.id;
 import com.rodnyroa.tienda_online_nativo.model.Imagen;
+import com.rodnyroa.tienda_online_nativo.model.Message;
 import com.rodnyroa.tienda_online_nativo.model.Response;
 import com.rodnyroa.tienda_online_nativo.model.RowProducto;
+import com.rodnyroa.tienda_online_nativo.model.User;
 
 import android.util.Log;
 
@@ -87,6 +91,7 @@ public class ParserJsonListadoProductos {
 			String User;
 			String UserName;
 			String Url;
+			JSONArray jObjectUsers = null;
 
 			try {
 				Id = p.getString("Id");
@@ -128,6 +133,12 @@ public class ParserJsonListadoProductos {
 				Url = p.getString("Url");
 			} catch (Exception e) {
 				Url = null;
+			}
+			
+			try {
+				jObjectUsers = p.getJSONArray("Users");
+			} catch (Exception e) {
+				//
 			}
 
 			if (Amount != null) {
@@ -175,10 +186,148 @@ public class ParserJsonListadoProductos {
 			if (listImg != null) {
 				rp.setImg(listImg);
 			}
+			
+			//
+			ArrayList<User> listUsers =null;
+			if(jObjectUsers!=null){
+				listUsers =getUsers(jObjectUsers);
+			}
+			
+			if(listUsers!=null){
+				rp.setUsers(listUsers);
+			}
 
 			products.add(rp);
 		}
 		return products;
+	}
+
+	private ArrayList<User> getUsers(JSONArray jObjectUsers)
+			throws JSONException {
+		ArrayList<User> listUsers = null;
+		for (int i = 0; i < jObjectUsers.length(); i++) {
+			if (listUsers == null) {
+				listUsers = new ArrayList<User>();
+			}
+			User user = new User();
+
+			JSONObject u = jObjectUsers.getJSONObject(i);
+
+			String Id = null;
+			String CompleteName = null;
+			String LastMessage = null;
+			JSONArray jObjectMsg = null;
+			ArrayList<Message> listMsg = null;
+
+			try {
+				Id = u.getString("Id");
+			} catch (Exception e) {
+				//
+			}
+			try {
+				CompleteName = u.getString("CompleteName");
+			} catch (Exception e) {
+				//
+			}
+			try {
+				LastMessage = u.getString("LastMessage");
+			} catch (Exception e) {
+				//
+			}
+
+			try {
+				jObjectMsg = u.getJSONArray("Messages");
+			} catch (Exception e) {
+				//
+			}
+
+			if (Id != null) {
+				user.setId(Id);
+			}
+
+			if (CompleteName != null) {
+				user.setCompleteName(CompleteName);
+			}
+
+			if (LastMessage != null) {
+				user.setLastMessage(LastMessage);
+			}
+
+			if (jObjectMsg != null) {
+				try {
+					listMsg = getMsg(jObjectMsg);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			if (listMsg != null) {
+				user.setMessages(listMsg);
+			}
+
+			listUsers.add(user);
+		}
+		return listUsers;
+	}
+
+	private ArrayList<Message> getMsg(JSONArray jObjectMsg) throws Exception {
+		ArrayList<Message> listMsg = null;
+		for (int i = 0; i < jObjectMsg.length(); i++) {
+			if (listMsg == null) {
+				listMsg = new ArrayList<Message>();
+			}
+
+			Message msg = new Message();
+
+			JSONObject m = jObjectMsg.getJSONObject(i);
+
+			String id = null;
+			String message = null;
+			String ts = null;
+			boolean owner = false;
+
+			try {
+				id = m.getString("Id");
+			} catch (Exception e) {
+				//
+			}
+
+			try {
+				message = m.getString("Message");
+			} catch (Exception e) {
+				//
+			}
+			
+			try {
+				ts = m.getString("Ts");
+			} catch (Exception e) {
+				//
+			}
+
+			try {
+				owner = m.getBoolean("Owner");
+			} catch (Exception e) {
+				//
+			}
+			
+			if(id!=null){
+				msg.setId(id);
+			}
+			
+			if(message!=null){
+				msg.setMessage(message);
+			}
+			
+			if(ts!=null){
+				msg.setTs(ts);
+			}
+			
+			msg.setOwner(owner);
+			
+			listMsg.add(msg);
+		}
+		return listMsg;
 	}
 
 	private ArrayList<Imagen> getListadoImg(JSONArray jObjectImagenes)
