@@ -7,7 +7,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.rodnyroa.tienda_online_nativo.R;
-import com.rodnyroa.tienda_online_nativo.adapter.CustomAdapterListadoProductos;
 import com.rodnyroa.tienda_online_nativo.adapter.GridLayoutMessagesAdapter;
 import com.rodnyroa.tienda_online_nativo.handlerrequest.HandlerRequestHttp;
 import com.rodnyroa.tienda_online_nativo.model.Response;
@@ -89,6 +88,7 @@ public class MessagesFragment extends Fragment {
 						return;
 					}
 					Log.i("", "HOLA"+response.getProducts().get(position).getUsers().get(0).getCompleteName());
+					Log.i("", "TMO"+response.getProducts().get(position).getUsers().get(0).getMessages().size());
 					
 					// this 'mActivity' parameter is Activity object, you can send the current activity.
 			        Intent i = new Intent(context, MsgChatUsersActivity.class);

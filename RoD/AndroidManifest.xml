@@ -30,6 +30,10 @@
             android:name="com.rodnyroa.tienda_online_nativo.MsgChatUsersActivity"
             android:label="@string/title_activity_msg_chat_users" >
         </activity>
+        <activity
+            android:name="com.rodnyroa.tienda_online_nativo.MsgUser"
+            android:label="@string/title_activity_msg_user" >
+        </activity>
     </application>
 
 </manifest>

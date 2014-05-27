@@ -48,6 +48,7 @@
     <string name="context_menu_my_products">Que desea hacer?</string>
     <string name="context_menu_sold">Ya lo he vendido</string>
     <string name="context_menu_remove">Quiero eliminarlo</string>
-    <string name="title_activity_msg_chat_users">MsgChatUsersActivity</string>
+    <string name="title_activity_msg_chat_users">Usuarios</string>
+    <string name="title_activity_msg_user">Mensajes</string>
 
 </resources>
