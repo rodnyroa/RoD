@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.rodnyroa.tienda_online_nativo.R.id;
+import com.rodnyroa.tienda_online_nativo.model.Categories;
+import com.rodnyroa.tienda_online_nativo.model.Currency;
 import com.rodnyroa.tienda_online_nativo.model.Imagen;
 import com.rodnyroa.tienda_online_nativo.model.Message;
 import com.rodnyroa.tienda_online_nativo.model.Response;
@@ -65,10 +67,128 @@ public class ParserJsonListadoProductos {
 			if (products != null) {
 				response.setProducts(products);
 			}
+
+			// Array de Messages
+			JSONArray jObjectMessages = null;
+
+			try {
+				jObjectMessages = jObject.getJSONArray("Messages");
+			} catch (Exception e) {
+				//
+			}
+
+			ArrayList<Message> messages = null;
+
+			if (jObjectMessages != null) {
+				messages = this.getMessages(jObjectMessages);
+			}
+
+			if (messages != null) {
+				response.setMessages(messages);
+			}
+
+			// Array de Currency
+			JSONArray jObjectCurrency = null;
+
+			try {
+				jObjectCurrency = jObject.getJSONArray("Currency");
+			} catch (Exception e) {
+				//
+			}
+
+			ArrayList<Currency> listCurrency = null;
+			if (jObjectCurrency != null) {
+				listCurrency = this.getCurrency(jObjectCurrency);
+			}
+
+			if (listCurrency != null) {
+				response.setCurrency(listCurrency);
+			}
+
+			// Array de Categories
+			JSONArray jObjectCategories = null;
+
+			try {
+				jObjectCategories = jObject.getJSONArray("Categories");
+			} catch (Exception e) {
+				//
+			}
+
+			ArrayList<Categories> listCategories = null;
+			if (jObjectCurrency != null) {
+				listCategories = this.getCategories(jObjectCategories);
+			}
+
+			if (listCategories != null) {
+				response.setCategories(listCategories);
+			}
+			
+			String id = null;
+			try{
+				id=jObject.getString("Id");
+			}catch(Exception e){
+				//
+			}
+			
+			if(id!=null){
+				response.setId(id);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return response;
+	}
+
+	private ArrayList<Message> getMessages(JSONArray jObjectMessages)
+			throws Exception {
+		ArrayList<Message> messages = null;
+		for (int i = 0; i < jObjectMessages.length(); i++) {
+			if (messages == null) {
+				messages = new ArrayList<Message>();
+			}
+			// Objeto message
+			JSONObject p = jObjectMessages.getJSONObject(i);
+
+			Message m = new Message();
+
+			try {
+				m.setMessage(p.getString("Message"));
+			} catch (Exception e) {
+				//
+			}
+
+			try {
+				m.setTs(p.getString("Ts"));
+			} catch (Exception e) {
+				//
+			}
+
+			try {
+				m.setOwner(p.getBoolean("Owner"));
+			} catch (Exception e) {
+				//
+			}
+
+			User u = null;
+			try {
+				JSONObject uo = p.getJSONObject("User");
+				u = new User();
+
+				u.setName(uo.getString("Name"));
+
+			} catch (Exception e) {
+				//
+			}
+
+			if (u != null) {
+				m.setUser(u);
+			}
+
+			messages.add(m);
+		}
+
+		return messages;
 	}
 
 	private ArrayList<RowProducto> getListadoProductos(
@@ -134,7 +254,7 @@ public class ParserJsonListadoProductos {
 			} catch (Exception e) {
 				Url = null;
 			}
-			
+
 			try {
 				jObjectUsers = p.getJSONArray("Users");
 			} catch (Exception e) {
@@ -177,29 +297,108 @@ public class ParserJsonListadoProductos {
 			} catch (Exception e) {
 				//
 			}
-			
+
 			ArrayList<Imagen> listImg = null;
-			
-			if(jObjectImagenes!=null){
+
+			if (jObjectImagenes != null) {
 				listImg = this.getListadoImg(jObjectImagenes);
 			}
 			if (listImg != null) {
 				rp.setImg(listImg);
 			}
-			
+
 			//
-			ArrayList<User> listUsers =null;
-			if(jObjectUsers!=null){
-				listUsers =getUsers(jObjectUsers);
+			ArrayList<User> listUsers = null;
+			if (jObjectUsers != null) {
+				listUsers = getUsers(jObjectUsers);
 			}
-			
-			if(listUsers!=null){
+
+			if (listUsers != null) {
 				rp.setUsers(listUsers);
 			}
 
 			products.add(rp);
+
 		}
 		return products;
+	}
+
+	private ArrayList<Categories> getCategories(JSONArray jObjectCategories)
+			throws JSONException {
+		ArrayList<Categories> l = null;
+		for (int i = 0; i < jObjectCategories.length(); i++) {
+			if (l == null) {
+				l = new ArrayList<Categories>();
+			}
+			Categories c = new Categories();
+
+			JSONObject u = jObjectCategories.getJSONObject(i);
+
+			String Id = null;
+			String Name = null;
+
+			try {
+				Id = u.getString("Id");
+			} catch (Exception e) {
+				//
+			}
+
+			try {
+				Name = u.getString("Name");
+			} catch (Exception e) {
+				//
+			}
+
+			if (Id != null) {
+				c.setId(Id);
+			}
+
+			if (Name != null) {
+				c.setName(Name);
+			}
+
+			l.add(c);
+		}
+		return l;
+	}
+
+	private ArrayList<Currency> getCurrency(JSONArray jObjectCurrency)
+			throws JSONException {
+		ArrayList<Currency> l = null;
+		for (int i = 0; i < jObjectCurrency.length(); i++) {
+			if (l == null) {
+				l = new ArrayList<Currency>();
+			}
+			Currency c = new Currency();
+
+			JSONObject u = jObjectCurrency.getJSONObject(i);
+
+			String Id = null;
+			String Name = null;
+
+			try {
+				Id = u.getString("Id");
+			} catch (Exception e) {
+				//
+			}
+
+			try {
+				Name = u.getString("Name");
+			} catch (Exception e) {
+				//
+			}
+
+			if (Id != null) {
+				c.setId(Id);
+			}
+
+			if (Name != null) {
+				c.setName(Name);
+			}
+
+			l.add(c);
+		}
+		return l;
 	}
 
 	private ArrayList<User> getUsers(JSONArray jObjectUsers)
@@ -298,7 +497,7 @@ public class ParserJsonListadoProductos {
 			} catch (Exception e) {
 				//
 			}
-			
+
 			try {
 				ts = m.getString("Ts");
 			} catch (Exception e) {
@@ -310,21 +509,21 @@ public class ParserJsonListadoProductos {
 			} catch (Exception e) {
 				//
 			}
-			
-			if(id!=null){
+
+			if (id != null) {
 				msg.setId(id);
 			}
-			
-			if(message!=null){
+
+			if (message != null) {
 				msg.setMessage(message);
 			}
-			
-			if(ts!=null){
+
+			if (ts != null) {
 				msg.setTs(ts);
 			}
-			
+
 			msg.setOwner(owner);
-			
+
 			listMsg.add(msg);
 		}
 		return listMsg;

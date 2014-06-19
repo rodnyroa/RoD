@@ -13,6 +13,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +62,15 @@ public class MyProductsFragment extends Fragment implements
 				.findViewById(R.id.listViewMyProducts);
 
 		pd = new ProgressDialog(getActivity());
-		pd.setMessage("Loading..");
+		pd.setTitle("Processing..");
+		pd.setMessage("Please wait..");
+		pd.setCancelable(false);
+		pd.setIndeterminate(true);
+		
+		if(!haveInternet(getActivity().getApplicationContext())){
+			showMessage("Por favor verifica tu conexión a internet.");
+			return rootView;
+		}
 
 		// Calling async task to get json
 		String[] data = { this.getPreferencesByKey("token") };
@@ -109,7 +119,8 @@ public class MyProductsFragment extends Fragment implements
 			HandlerRequestHttp sh = new HandlerRequestHttp();
 
 			String urlListadoProductos = getResources().getString(
-					R.urls.url_my_products);
+					R.urls.url_base)
+					+ getResources().getString(R.urls.url_my_products);
 
 			// AÑADIR PARAMETROS
 			List<NameValuePair> data = new ArrayList<NameValuePair>();
@@ -148,13 +159,14 @@ public class MyProductsFragment extends Fragment implements
 			if (response == null) {
 				return;
 			}
-			Toast.makeText(context, "token obtenido:" + response.getToken(),
-					Toast.LENGTH_SHORT).show();
+//			Toast.makeText(context, "token obtenido:" + response.getToken(),
+//					Toast.LENGTH_SHORT).show();
 			if (response.getToken() != null) {
 				savePreferences("token", response.getToken());
-				/*Toast.makeText(context,
-						"Guardando token:" + response.getToken(),
-						Toast.LENGTH_SHORT).show();*/
+				/*
+				 * Toast.makeText(context, "Guardando token:" +
+				 * response.getToken(), Toast.LENGTH_SHORT).show();
+				 */
 			}
 
 			if (response.getResponse().equals("KO2")) {
@@ -177,12 +189,13 @@ public class MyProductsFragment extends Fragment implements
 				 * method stub return false; } });
 				 */
 				registerForContextMenu(listViewMyProducts);
-			}else{
-				Toast.makeText(rootView.getContext(), "Sin datos", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(rootView.getContext(), "Sin datos",
+						Toast.LENGTH_SHORT).show();
 				getActivity().findViewById(R.id.frame_container);
-				
+
 				Fragment fragment = new SinDatosFragment();
-				
+
 				FragmentManager fragmentManager = getFragmentManager();
 				fragmentManager.beginTransaction()
 						.replace(R.id.frame_container, fragment).commit();
@@ -249,13 +262,31 @@ public class MyProductsFragment extends Fragment implements
 				"function 1 called " + products.get(id).getId(),
 				Toast.LENGTH_SHORT).show();
 		// Calling async task to get json
-				String[] data = { this.getPreferencesByKey("token"),products.get(id).getId(),R.urls.url_remove_product+"" };
-				new updateStatusProduct().execute(data);
+		String url = getResources().getString(R.urls.url_base)
+				+ getResources().getString(R.urls.url_remove_product);
+		
+		if(!haveInternet(getActivity().getApplicationContext())){
+			showMessage("Por favor verifica tu conexión a internet.");
+			return;
+		}
+		String[] data = { this.getPreferencesByKey("token"),
+				products.get(id).getId(), url };
+		new updateStatusProduct().execute(data);
 	}
 
 	public void soldItem(int id) {
 		Toast.makeText(context, "function 2 called", Toast.LENGTH_SHORT).show();
-		String[] data = { this.getPreferencesByKey("token"),products.get(id).getId(),R.urls.url_sold_product+"" };
+		
+		String url = getResources().getString(R.urls.url_base)
+				+ getResources().getString(R.urls.url_sold_product);
+		
+		if(!haveInternet(getActivity().getApplicationContext())){
+			showMessage("Por favor verifica tu conexión a internet.");
+			return;
+		}
+		
+		String[] data = { this.getPreferencesByKey("token"),
+				products.get(id).getId(), url };
 		new updateStatusProduct().execute(data);
 	}
 
@@ -276,8 +307,8 @@ public class MyProductsFragment extends Fragment implements
 
 			String urlListadoProductos = getResources().getString(
 					Integer.parseInt(arg0[2]));
-			
-			Log.d("", "URL:"+urlListadoProductos);
+
+			Log.d("", "URL:" + urlListadoProductos);
 
 			// AÑADIR PARAMETROS
 			List<NameValuePair> data = new ArrayList<NameValuePair>();
@@ -291,24 +322,24 @@ public class MyProductsFragment extends Fragment implements
 			Log.d("Response: ", "> " + jsonStr);
 
 			if (jsonStr != null) {
-				try{
+				try {
 					JSONObject jObject = new JSONObject(jsonStr);
 					response = new Response();
 
 					String sResponse = jObject.getString("Response");
 
 					response.setResponse(sResponse);
-					
-					try{
+
+					try {
 						String token = jObject.getString("Token");
-						if(token!=null){
+						if (token != null) {
 							response.setToken(token);
 						}
-					}catch(Exception ex){
+					} catch (Exception ex) {
 						//
 					}
 
-				}catch(Exception e){
+				} catch (Exception e) {
 					//
 				}
 			} else {
@@ -324,21 +355,42 @@ public class MyProductsFragment extends Fragment implements
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			pd.dismiss();
-			if(response==null){
+			if (response == null) {
 				return;
 			}
-			
-			if(response.getResponse().equals("OK")){
+
+			if (response.getResponse().equals("OK")) {
 				savePreferences("token", response.getToken());
-				
+
 				String[] data = { response.getToken() };
 				new GetMyProducts().execute(data);
-			}else{
-				Toast.makeText(context, "Error vuelva a intentarlo de nuevo", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(context, "Error vuelva a intentarlo de nuevo",
+						Toast.LENGTH_SHORT).show();
 			}
 
-			
 		}
 
+	}
+	
+	public static boolean haveInternet(Context ctx) {
+
+	    NetworkInfo info = (NetworkInfo) ((ConnectivityManager) ctx
+	            .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+	    if (info == null || !info.isConnected()) {
+	        return false;
+	    }
+	    if (info.isRoaming()) {
+	        // here is the roaming option you can change it if you want to
+	        // disable internet while roaming, just return false
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private void showMessage(String message) {
+		Toast.makeText(getActivity().getApplicationContext(), message,
+				Toast.LENGTH_SHORT).show();
 	}
 }

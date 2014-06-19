@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -143,8 +145,10 @@ public class MainActivity extends Activity {
 
 		// Communities, Will add a counter here
 
+		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons
+		//		.getResourceId(4, -1), true, "22", 2));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons
-				.getResourceId(4, -1), true, "22", 2));
+				.getResourceId(4, -1), 2));
 
 		// Logout
 
@@ -237,8 +241,8 @@ public class MainActivity extends Activity {
 		SharedPreferences sharedPreferences = getSharedPreferences(
 				"MyPreferences", Context.MODE_PRIVATE);
 		String token = sharedPreferences.getString("token", "sin token");
-		Toast.makeText(getApplicationContext(), "Token:" + token,
-				Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getApplicationContext(), "Token:" + token,
+//				Toast.LENGTH_SHORT).show();
 	}
 
 	private String getPreferencesByKey(String key) {
@@ -463,5 +467,6 @@ public class MainActivity extends Activity {
 		startActivity(getIntent());
 		
 	}
+	
 
 }

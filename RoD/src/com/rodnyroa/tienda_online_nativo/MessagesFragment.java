@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,8 +51,12 @@ public class MessagesFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.fragment_messages, container,
 				false);
 		context = rootView.getContext();
+
 		pd = new ProgressDialog(getActivity());
-		pd.setMessage("Loading..");
+		pd.setTitle("Processing..");
+		pd.setMessage("Please wait..");
+		pd.setCancelable(false);
+		pd.setIndeterminate(true);
 
 		gridLayoutMsg = (GridView) rootView.findViewById(R.id.gridView1);
 
@@ -66,6 +72,11 @@ public class MessagesFragment extends Fragment {
 
 			listado.add(p);
 			p = null;
+		}
+		
+		if(!haveInternet(getActivity().getApplicationContext())){
+			showMessage("Por favor verifica tu conexión a internet.");
+			return rootView;
 		}
 
 		// Log.d("listado: ", "> " + listado.size());
@@ -93,6 +104,7 @@ public class MessagesFragment extends Fragment {
 					// this 'mActivity' parameter is Activity object, you can send the current activity.
 			        Intent i = new Intent(context, MsgChatUsersActivity.class);
 			        i.putExtra("Users", response.getProducts().get(position).getUsers());
+			        i.putExtra("IdProducto", response.getProducts().get(position).getId());
 			        startActivity(i);
 					//Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
 				}
@@ -123,7 +135,7 @@ public class MessagesFragment extends Fragment {
 			// Creating service handler class instance
 			HandlerRequestHttp sh = new HandlerRequestHttp();
 
-			String urlChat = getResources().getString(R.urls.url_chat);
+			String urlChat = getResources().getString(R.urls.url_base)+getResources().getString(R.urls.url_chat);
 
 			// ANADIR PARAMETROS
 			List<NameValuePair> data = new ArrayList<NameValuePair>();
@@ -164,8 +176,8 @@ public class MessagesFragment extends Fragment {
 			}
 			Log.d("onPostExecute", "" + response.getResponse());
 			Log.d("onPostExecute", "" + response.getToken());
-			Toast.makeText(context, "token obtenido:" + response.getToken(),
-					Toast.LENGTH_SHORT).show();
+//			Toast.makeText(context, "token obtenido:" + response.getToken(),
+//					Toast.LENGTH_SHORT).show();
 			if (response.getToken() != null) {
 				savePreferences("token", response.getToken());
 				/*
@@ -214,5 +226,26 @@ public class MessagesFragment extends Fragment {
 		this.getActivity().finish();
 		startActivity(this.getActivity().getIntent());
 
+	}
+	
+	public static boolean haveInternet(Context ctx) {
+
+	    NetworkInfo info = (NetworkInfo) ((ConnectivityManager) ctx
+	            .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+	    if (info == null || !info.isConnected()) {
+	        return false;
+	    }
+	    if (info.isRoaming()) {
+	        // here is the roaming option you can change it if you want to
+	        // disable internet while roaming, just return false
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private void showMessage(String message) {
+		Toast.makeText(getActivity().getApplicationContext(), message,
+				Toast.LENGTH_SHORT).show();
 	}
 }

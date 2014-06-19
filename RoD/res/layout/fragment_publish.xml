@@ -1,22 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
-    <TextView
-        android:id="@+id/txtLabel"
-         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="Publish"/>
-    
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabel"
-        android:src="@drawable/ic_publish"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
-    
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linearLayoutGroupImages"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/relative_layout_publish"
+            android:layout_marginLeft="@dimen/rl_publish_margin"
+            android:layout_marginRight="@dimen/rl_publish_margin" >
+
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="@dimen/img_publish"
+                android:layout_height="@dimen/img_publish"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/picture" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/ic_input_add" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextQueVendes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Que vendes" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editTextDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Describelo.."
+        android:inputType="textPostalAddress" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/editTextPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Precio"
+            android:inputType="number" />
+
+        <Spinner
+            android:id="@+id/spinnerTipoMoneda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Categoría" />
+
+        <Spinner
+            android:id="@+id/spinnerCategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Publicar" />
+
+</LinearLayout>

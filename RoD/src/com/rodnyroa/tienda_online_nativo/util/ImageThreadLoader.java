@@ -20,6 +20,7 @@ import android.util.Log;
  * This is an object that can load images from a URL on a thread.
  *
  * @author Jeremy Wadsack
+ * http://ballardhack.wordpress.com/2010/04/10/loading-images-over-http-on-a-separate-thread-on-android/
  */
 public class ImageThreadLoader {
     private static final String TAG = "ImageThreadLoader";

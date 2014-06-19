@@ -2,15 +2,24 @@ package com.rodnyroa.tienda_online_nativo.model;
 
 import java.io.Serializable;
 
-public class Message  implements Serializable{
+public class Message implements Serializable {
 
 	private String Id;
 	private String Message;
 	private String Ts;
 	private boolean Owner;
+	private User User;
 
 	public Message() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public User getUser() {
+		return User;
+	}
+
+	public void setUser(User user) {
+		User = user;
 	}
 
 	public String getId() {

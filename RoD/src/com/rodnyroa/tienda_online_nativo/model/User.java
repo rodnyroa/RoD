@@ -8,11 +8,23 @@ public class User  implements Serializable{
 	private String Id;
 	private String CompleteName;
 	private String LastMessage;
+	private String Name;
 	private ArrayList<Message> Messages;
 
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
+	
+
+	public String getName() {
+		return Name;
+	}
+
+
+	public void setName(String name) {
+		Name = name;
+	}
+
 
 	public String getId() {
 		return Id;

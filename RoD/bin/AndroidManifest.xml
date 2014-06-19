@@ -11,8 +11,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -32,7 +37,17 @@
         </activity>
         <activity
             android:name="com.rodnyroa.tienda_online_nativo.MsgUser"
-            android:label="@string/title_activity_msg_user" >
+            android:label="@string/title_activity_msg_user"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.rodnyroa.tienda_online_nativo.DetalleProductoActivity"
+            android:label="@string/title_activity_detalle_producto" >
+        </activity>
+        <activity
+            android:name="com.rodnyroa.tienda_online_nativo.NegociarActivity"
+            android:label="@string/title_activity_negociar"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 
