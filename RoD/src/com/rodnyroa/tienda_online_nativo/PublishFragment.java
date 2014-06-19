@@ -529,9 +529,9 @@ public class PublishFragment extends Fragment {
 				Log.e("", "response null ");
 				return;
 			}
-			Toast.makeText(getActivity().getApplicationContext(),
-					"token obtenido:" + response.getToken(), Toast.LENGTH_SHORT)
-					.show();
+//			Toast.makeText(getActivity().getApplicationContext(),
+//					"token obtenido:" + response.getToken(), Toast.LENGTH_SHORT)
+//					.show();
 			if (response.getToken() != null) {
 				token = response.getToken();
 				savePreferences("token", response.getToken());

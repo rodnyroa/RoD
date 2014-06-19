@@ -236,7 +236,7 @@ public class LoginFragment extends Fragment {
 	 * Ingrear
 	 */
 	private class LoginService extends AsyncTask<String, Void, Void> {
-
+		String response = "KO";
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -272,7 +272,8 @@ public class LoginFragment extends Fragment {
 				// {"Response":"OK","Token":"874581b27702798734ca3b89f0b331c2","Name":"PEPE PEREZ","IdUser":"15"}
 				try {
 					JSONObject jObject = new JSONObject(jsonStr);
-					String response = jObject.getString("Response");
+					response = jObject.getString("Response");
+					System.out.println("Response:"+response);
 					if (response.equalsIgnoreCase("OK")) {
 						String token = jObject.getString("Token");
 						String name = jObject.getString("Name");
@@ -298,6 +299,7 @@ public class LoginFragment extends Fragment {
 
 					}
 				} catch (Exception e) {
+					
 					e.printStackTrace();
 				}
 			}
@@ -307,7 +309,13 @@ public class LoginFragment extends Fragment {
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-
+			if(response.equals("KO")){
+				Toast.makeText(context, "Usuario, Password incorrectos...",
+						Toast.LENGTH_SHORT).show();
+				
+				txtEmail.setText("");
+				txtPwd.setText("");
+			}
 			pd.dismiss();
 		}
 
