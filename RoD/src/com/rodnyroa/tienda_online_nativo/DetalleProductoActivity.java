@@ -77,6 +77,10 @@ public class DetalleProductoActivity extends Activity implements
 
 		Log.i("idUser:", idUser + "");
 		Log.i("idUser Producto:", producto.getUser() + "");
+		
+		if(idUser==null){
+			idUser=producto.getUser();
+		}
 
 		if (idUser.equalsIgnoreCase(producto.getUser())) {
 			btnNegociar.setVisibility(View.GONE);
